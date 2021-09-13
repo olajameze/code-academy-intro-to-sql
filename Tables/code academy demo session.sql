@@ -25,7 +25,14 @@ WHERE city LIKE 'B%';
 
 --@block
 
-SELECT customer_name,
-from CodeAcademy.customer
+SELECT 
+A.customer_name
+,B.total_amount
+from CodeAcademy.customer A
+inner join CodeAcademy.order B
+ on A.customer_id = B.customer_id
+ limit 10;
 
+--@block
 
+select
