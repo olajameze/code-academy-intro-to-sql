@@ -62,13 +62,42 @@ LEFT join CodeAcademy.order B
 
 --@block
 
-SELECT customer_name, 
-aggregate_function('order') 
-FROM CodeAcademy 
-GROUP BY customer_name;
+SELECT a.city, 
+count(b.order_id) count_of_orders
+FROM CodeAcademy.customer A
+inner join CodeAcademy.order B
+  on A.customer_id = B.customer_id
+GROUP BY A.city
+order by count_of_orders DESC;
 
 --@block
 
- select customer_name
- from CodeAcademy.customer
- where city = customer_name;
+ select 
+ A.customer_name
+ ,Min(B.order_date)
+ from CodeAcademy.customer A
+ inner join CodeAcademy.order B
+ on A.customer_id = B.customer_id
+ group by A.customer_name
+
+--@block
+
+select LEFT(o.order_date::text,7) year_month, 
+sum (o.total_amount), p.product_name
+from CodeAcademy.order o
+Left join CodeAcademy.order_line ol
+on o.order_id = ol.order_id
+Left join CodeAcademy.product p
+on p.product_id = ol.product_id
+group by year_month, p.product_name;
+
+--@block
+
+select LEFT(customer_name | Date | Order_Amount) year_month, 
+sum (o.total_amount), p.product_name
+from CodeAcademy.order o
+Left join CodeAcademy.customer_id
+on o.order_id = ol.order_id
+Left join CodeAcademy.order o
+on p.product_id = ol.product_id
+group by year_month, p.product_name;
